@@ -116,6 +116,8 @@ class TeamController{
             $this->formErrors[] = "Veuillez saisir un nom d'équipe";
         }
 
+        
+
         if (isset($_POST['nb_points']) && empty($_POST['nb_points'])) {
             $this->formErrors[] = "Veuillez saisir un nombre de points";
         }
