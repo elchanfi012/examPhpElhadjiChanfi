@@ -14,3 +14,8 @@ Questions théoriques
 9) - Modele correspond aux données de l'application sous forme de classe d'objets
    - Vue correspond à l'affichage des pages 
    - Controlleur correspond au traitements des données 
+
+
+
+db_username = 'admin'
+db_password = 'admin'
