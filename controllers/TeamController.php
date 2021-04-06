@@ -12,6 +12,29 @@ class TeamController{
             $this->pageTitle = '';
     }
 
+    public function checkFormError(){
+
+        if (isset($_POST['label']) && empty($_POST['label'])) {
+            $this->formErrors[] = "Veuillez saisir un nom d'équipe";
+        }
+
+        if (isset($_POST['nb_points']) && (empty($_POST['nb_points']) || $_POST['nb_points'] < 0)) {
+            $this->formErrors[] = "Veuillez saisir un nombre de points";
+        }
+
+        if (isset($_POST['nb_goals_scored']) && (empty($_POST['nb_goals_scored']) || $_POST['nb_goals_scored'] < 0)) {
+            $this->formErrors[] = "Veuillez saisir un nombre de buts marqués";
+        }
+
+        if (isset($_POST['nb_goals_conceded']) && (empty($_POST['nb_goals_conceded']) || $_POST['nb_goals_conceded'] < 0)) {
+            $this->formErrors[] = "Veuillez saisir un nombre de buts concédés";
+        }
+
+        if (isset($_FILES['logo']) && $_FILES['logo']['error'] !== 0) {
+            $this->formErrors[] = "Veuillez insérer un logo";
+        }
+    }
+
 
     public function displayAddTeamForm(){
         
@@ -27,25 +50,9 @@ class TeamController{
 
         $this->pageTitle = "Formulaire ajout equipe";
 
-        if (isset($_POST['label']) && empty($_POST['label'])) {
-            $this->formErrors[] = "Veuillez saisir un nom d'équipe";
-        }
+        $team = new Team(null, null, null, null, null, null);
 
-        if (isset($_POST['nb_points']) && empty($_POST['nb_points'])) {
-            $this->formErrors[] = "Veuillez saisir un nombre de points";
-        }
-
-        if (isset($_POST['nb_goals_scored']) && empty($_POST['nb_goals_scored'])) {
-            $this->formErrors[] = "Veuillez saisir un nombre de buts marqués";
-        }
-
-        if (isset($_POST['nb_goals_conceded']) && empty($_POST['nb_goals_conceded'])) {
-            $this->formErrors[] = "Veuillez saisir un nombre de buts concédés";
-        }
-
-        if (isset($_FILES['logo']) && $_FILES['logo']['error'] !== 0) {
-            $this->formErrors[] = "Veuillez insérer un logo";
-        }
+        $this->checkFormError();
 
 
         if (count($this->formErrors) === 0) {
@@ -112,27 +119,15 @@ class TeamController{
 
         $this->pageTitle = "Formulaire modification equipe";
 
-        if (isset($_POST['label']) && empty($_POST['label'])) {
-            $this->formErrors[] = "Veuillez saisir un nom d'équipe";
+        $team = $this->teamManager->getTeam($_GET['id'])['team'];
+
+        if($team == null){
+            throw new Exception("Page introuvable", 404);
         }
+
+        $this->checkFormError();
 
         
-
-        if (isset($_POST['nb_points']) && empty($_POST['nb_points'])) {
-            $this->formErrors[] = "Veuillez saisir un nombre de points";
-        }
-
-        if (isset($_POST['nb_goals_scored']) && empty($_POST['nb_goals_scored'])) {
-            $this->formErrors[] = "Veuillez saisir un nombre de buts marqués";
-        }
-
-        if (isset($_POST['nb_goals_conceded']) && empty($_POST['nb_goals_conceded'])) {
-            $this->formErrors[] = "Veuillez saisir un nombre de buts concédés";
-        }
-
-        if (isset($_FILES['logo']) && $_FILES['logo']['error'] !== 0) {
-            $this->formErrors[] = "Veuillez insérer un logo";
-        }
 
         if (count($this->formErrors) === 0) {
             
